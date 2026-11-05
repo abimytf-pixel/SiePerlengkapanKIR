@@ -12,11 +12,666 @@
    ============================================ */
 
 /* ============================================
-   KONFIGURASI — Ganti sesuai data nyata
+   DATA PESERTA CAMP RISET 2026
+   Format: { name, class, group }
+   Group menggunakan format: MST_01 s.d MST_27
    ============================================ */
-const STUDENT_NAMES = [
-  "Akbar Bima Al Farobi", "Satrio Tirto", "Asfroh Nabila",
-  "Siti Aisyah", "Budi Santoso", "Zahra Amalia"
+const STUDENT_DATA = [
+  {
+    "name": "Yurie Kurniawan Sahputra",
+    "class": "XI-E",
+    "team": "MST_01"
+  },
+  {
+    "name": "Satrio Tirto Prodjo",
+    "class": "XI-E",
+    "team": "MST_01"
+  },
+  {
+    "name": "Aprillia Indah Setyarini",
+    "class": "XI-E",
+    "team": "MST_02"
+  },
+  {
+    "name": "Naila Eiliyah Syafa",
+    "class": "XI-E",
+    "team": "MST_02"
+  },
+  {
+    "name": "Zahiratun Najwa",
+    "class": "X-G",
+    "team": "MST_03"
+  },
+  {
+    "name": "Fatikhah Ainun Rizki",
+    "class": "X-C",
+    "team": "MST_03"
+  },
+  {
+    "name": "Nayara Syauqillah Hanafi",
+    "class": "XI-J",
+    "team": "MST_04"
+  },
+  {
+    "name": "Nabila Ilmi Aulia",
+    "class": "XI-F",
+    "team": "MST_04"
+  },
+  {
+    "name": "Rayina Nailah Kamil",
+    "class": "X-D",
+    "team": "MST_05"
+  },
+  {
+    "name": "Eva Nur Laily Maulidyah",
+    "class": "X-D",
+    "team": "MST_05"
+  },
+  {
+    "name": "Aqliyah Mezaluna Shofroh",
+    "class": "X-D",
+    "team": "MST_06"
+  },
+  {
+    "name": "Najda In Fatma",
+    "class": "X-H",
+    "team": "MST_06"
+  },
+  {
+    "name": "Dylita Ayu Marta Sari",
+    "class": "XI-G",
+    "team": "MST_07"
+  },
+  {
+    "name": "Keyla Nazihah Ramadhani",
+    "class": "XI-G",
+    "team": "MST_07"
+  },
+  {
+    "name": "Kharira Istigfareina",
+    "class": "X-F",
+    "team": "MST_08"
+  },
+  {
+    "name": "Ainindya Zahrotus Syifa",
+    "class": "X-F",
+    "team": "MST_08"
+  },
+  {
+    "name": "Khansarifda Almira Gusnia",
+    "class": "X-E",
+    "team": "MST_09"
+  },
+  {
+    "name": "Adelia Bernesyha Dafina",
+    "class": "X-E",
+    "team": "MST_09"
+  },
+  {
+    "name": "Muhammad Andre Fakhriyanto",
+    "class": "X-I",
+    "team": "MST_10"
+  },
+  {
+    "name": "Muhammad Hatta Rajasa",
+    "class": "X-I",
+    "team": "MST_10"
+  },
+  {
+    "name": "Helen Agnidiantika",
+    "class": "X-E",
+    "team": "MST_11"
+  },
+  {
+    "name": "Lylla Putri Agnifirstly",
+    "class": "X-J",
+    "team": "MST_11"
+  },
+  {
+    "name": "Shasyura Queen Andaresta",
+    "class": "X-G",
+    "team": "MST_12"
+  },
+  {
+    "name": "Mainova Anggraini",
+    "class": "X-C",
+    "team": "MST_12"
+  },
+  {
+    "name": "Dewantara Alif Nauwarah Wahyudi",
+    "class": "X-D",
+    "team": "MST_13"
+  },
+  {
+    "name": "Zaky Al Faruq",
+    "class": "X-E",
+    "team": "MST_13"
+  },
+  {
+    "name": "Muhammad Thoriq Akbar",
+    "class": "X-F",
+    "team": "MST_14"
+  },
+  {
+    "name": "Nisrina Azizah",
+    "class": "X-F",
+    "team": "MST_14"
+  },
+  {
+    "name": "Raihan Dimas Rizkinanta",
+    "class": "X-D",
+    "team": "MST_15"
+  },
+  {
+    "name": "Mochamad Dafa Taufiqi",
+    "class": "X-L",
+    "team": "MST_15"
+  },
+  {
+    "name": "Anindita Azaria K.W",
+    "class": "X-D",
+    "team": "MST_16"
+  },
+  {
+    "name": "Niswa Nuha Naira",
+    "class": "X-D",
+    "team": "MST_16"
+  },
+  {
+    "name": "Risydatul Azizah R.",
+    "class": "X-D",
+    "team": "MST_16"
+  },
+  {
+    "name": "Anugrah Rafaat Julianto",
+    "class": "X-E",
+    "team": "MST_17"
+  },
+  {
+    "name": "Muhammad Amir Assadillah Mumtaz",
+    "class": "X-E",
+    "team": "MST_17"
+  },
+  {
+    "name": "Naufal Arif Fikri",
+    "class": "X-E",
+    "team": "MST_17"
+  },
+  {
+    "name": "Angel Erca Viviana",
+    "class": "X-E",
+    "team": "MST_18"
+  },
+  {
+    "name": "Qonitah Nuryn Najah",
+    "class": "X-E",
+    "team": "MST_18"
+  },
+  {
+    "name": "Zaimatur Rahmah Wahyuningtyas",
+    "class": "X-E",
+    "team": "MST_18"
+  },
+  {
+    "name": "Adinda Putri Aulia",
+    "class": "X-E",
+    "team": "MST_19"
+  },
+  {
+    "name": "Kamila Dzakiya Mumtazah",
+    "class": "X-E",
+    "team": "MST_19"
+  },
+  {
+    "name": "Nadine Nur Aulia",
+    "class": "X-E",
+    "team": "MST_19"
+  },
+  {
+    "name": "Andien Wildani Alifia",
+    "class": "X-E",
+    "team": "MST_20"
+  },
+  {
+    "name": "Istina Nuril Umah",
+    "class": "X-E",
+    "team": "MST_20"
+  },
+  {
+    "name": "Khalishah Aristawati Khosyi",
+    "class": "X-E",
+    "team": "MST_20"
+  },
+  {
+    "name": "Kirana Ailsa Hernani",
+    "class": "X-E",
+    "team": "MST_21"
+  },
+  {
+    "name": "Nabillah Lovelia Vanissa",
+    "class": "X-E",
+    "team": "MST_21"
+  },
+  {
+    "name": "Tasya Aulia",
+    "class": "X-E",
+    "team": "MST_21"
+  },
+  {
+    "name": "Aafizhah Zahida Nagari",
+    "class": "X-E",
+    "team": "MST_22"
+  },
+  {
+    "name": "Syahla Hilayatul Auliya",
+    "class": "X-E",
+    "team": "MST_22"
+  },
+  {
+    "name": "Achmad Jabar Jalidin Batin",
+    "class": "X-E",
+    "team": "MST_22"
+  },
+  {
+    "name": "Muhammad Fakhri Falihudin",
+    "class": "X-E",
+    "team": "MST_23"
+  },
+  {
+    "name": "Muhammad Alif Akma Farras Fakhrullah",
+    "class": "X-E",
+    "team": "MST_23"
+  },
+  {
+    "name": "Alif Fauzan Hadrianto",
+    "class": "X-F",
+    "team": "MST_24"
+  },
+  {
+    "name": "Itmamus Tsiqotu Qolbiyah",
+    "class": "X-F",
+    "team": "MST_24"
+  },
+  {
+    "name": "Anindynata Rahma Setiani",
+    "class": "X-F",
+    "team": "MST_24"
+  },
+  {
+    "name": "Erina Faiza",
+    "class": "X-F",
+    "team": "MST_25"
+  },
+  {
+    "name": "Safina Annajah Niswa",
+    "class": "X-F",
+    "team": "MST_25"
+  },
+  {
+    "name": "Fian Amanullah",
+    "class": "X-F",
+    "team": "MST_26"
+  },
+  {
+    "name": "Sultan Asher Setiaji",
+    "class": "X-F",
+    "team": "MST_26"
+  },
+  {
+    "name": "M. Arsya Rastra Sulistyono",
+    "class": "X-F",
+    "team": "MST_26"
+  },
+  {
+    "name": "Almira Channadya Najichah",
+    "class": "X-F",
+    "team": "MST_27"
+  },
+  {
+    "name": "Axelia Shafa Alvina Setiyawan",
+    "class": "X-F",
+    "team": "MST_27"
+  },
+  {
+    "name": "Tita Amelia",
+    "class": "X-O",
+    "team": "ISH_01"
+  },
+  {
+    "name": "Azelya Althafanisa",
+    "class": "X-F",
+    "team": "ISH_01"
+  },
+  {
+    "name": "Bima Maulana Muhlisin",
+    "class": "X-C",
+    "team": "ISH_02"
+  },
+  {
+    "name": "Khoirul Anam",
+    "class": "X-C",
+    "team": "ISH_02"
+  },
+  {
+    "name": "Zahro Failasuffa Addina",
+    "class": "XI-G",
+    "team": "ISH_03"
+  },
+  {
+    "name": "Qosthalani Imaniar Witanto",
+    "class": "XI-O",
+    "team": "ISH_03"
+  },
+  {
+    "name": "Nisa'ur Rizqi Fauziyyah",
+    "class": "X-M",
+    "team": "ISH_04"
+  },
+  {
+    "name": "Safira Amiratuzzahira",
+    "class": "X-H",
+    "team": "ISH_04"
+  },
+  {
+    "name": "Asyifa Nur Madina",
+    "class": "X-G",
+    "team": "ISH_05"
+  },
+  {
+    "name": "Natasya Sufa Arumeilah",
+    "class": "X-G",
+    "team": "ISH_05"
+  },
+  {
+    "name": "Syakilla Noura Azzahra",
+    "class": "X-J",
+    "team": "ISH_06"
+  },
+  {
+    "name": "Vannessa Angelina Putri Hermawan",
+    "class": "X-J",
+    "team": "ISH_06"
+  },
+  {
+    "name": "Alena Ziza Rahmawati",
+    "class": "X-G",
+    "team": "ISH_07"
+  },
+  {
+    "name": "Anisaul Muzayyadah",
+    "class": "X-H",
+    "team": "ISH_07"
+  },
+  {
+    "name": "Alya Zakiyah",
+    "class": "X-O",
+    "team": "ISH_08"
+  },
+  {
+    "name": "Naina Tsabita Salam",
+    "class": "X-F",
+    "team": "ISH_08"
+  },
+  {
+    "name": "Arzaqina Kahfi Azzahrani",
+    "class": "X-J",
+    "team": "ISH_09"
+  },
+  {
+    "name": "Herrawati Aisyah Az-Zahra",
+    "class": "X-G",
+    "team": "ISH_09"
+  },
+  {
+    "name": "Quinsa Adelia Herwin",
+    "class": "X-J",
+    "team": "ISH_09"
+  },
+  {
+    "name": "Naura Cheryl Aisyah Rahma",
+    "class": "X-F",
+    "team": "ISH_10"
+  },
+  {
+    "name": "Athaya Khansa Kirana Saputro",
+    "class": "X-F",
+    "team": "ISH_10"
+  },
+  {
+    "name": "Salwa Mufidatun Nuzula",
+    "class": "X-I",
+    "team": "ISH_11"
+  },
+  {
+    "name": "Lailatul Zayyana Nur Ramadhani",
+    "class": "X-I",
+    "team": "ISH_11"
+  },
+  {
+    "name": "Naila Syarifatul A.",
+    "class": "X-D",
+    "team": "ISH_12"
+  },
+  {
+    "name": "Nessya Hemalia",
+    "class": "X-D",
+    "team": "ISH_12"
+  },
+  {
+    "name": "Alifah Nur Faizah",
+    "class": "X-D",
+    "team": "ISH_12"
+  },
+  {
+    "name": "Moch. Zio Raditia P.",
+    "class": "X-D",
+    "team": "ISH_13"
+  },
+  {
+    "name": "M. Hafiizh Addin",
+    "class": "X-D",
+    "team": "ISH_13"
+  },
+  {
+    "name": "Athfan Hafidz H.",
+    "class": "X-D",
+    "team": "ISH_13"
+  },
+  {
+    "name": "Alila Niko Firmansyah",
+    "class": "X-D",
+    "team": "ISH_14"
+  },
+  {
+    "name": "M. Brian Abyakta",
+    "class": "X-D",
+    "team": "ISH_14"
+  },
+  {
+    "name": "Norman Priyanto P.",
+    "class": "X-D",
+    "team": "ISH_14"
+  },
+  {
+    "name": "Karisma Windah N.",
+    "class": "X-D",
+    "team": "ISH_15"
+  },
+  {
+    "name": "Silkhiyatul Khusna",
+    "class": "X-D",
+    "team": "ISH_15"
+  },
+  {
+    "name": "Indah Rizky S.",
+    "class": "X-D",
+    "team": "ISH_15"
+  },
+  {
+    "name": "Imelda Khumairoh",
+    "class": "X-D",
+    "team": "ISH_16"
+  },
+  {
+    "name": "Naura Bilqis Alamsyah",
+    "class": "X-D",
+    "team": "ISH_16"
+  },
+  {
+    "name": "Frisca Nafratilova",
+    "class": "X-D",
+    "team": "ISH_16"
+  },
+  {
+    "name": "Oktavia Delia P.",
+    "class": "X-D",
+    "team": "ISH_17"
+  },
+  {
+    "name": "Mona Medieratama",
+    "class": "X-D",
+    "team": "ISH_17"
+  },
+  {
+    "name": "Erlangga Syahputra",
+    "class": "X-E",
+    "team": "ISH_18"
+  },
+  {
+    "name": "Husein Abdul Aziz",
+    "class": "X-E",
+    "team": "ISH_18"
+  },
+  {
+    "name": "Mizan Asrori",
+    "class": "X-E",
+    "team": "ISH_18"
+  },
+  {
+    "name": "Aulia Syawala Oktavia",
+    "class": "X-F",
+    "team": "ISH_19"
+  },
+  {
+    "name": "Indi Rafidhah Qoulan Tsakila",
+    "class": "X-F",
+    "team": "ISH_19"
+  },
+  {
+    "name": "Raudina Zata Lini",
+    "class": "X-F",
+    "team": "ISH_19"
+  },
+  {
+    "name": "Kalila Hanum Alamsyah",
+    "class": "X-F",
+    "team": "ISH_20"
+  },
+  {
+    "name": "Ayashofya Mykha Aqeela",
+    "class": "X-F",
+    "team": "ISH_20"
+  },
+  {
+    "name": "Jihan Alma Falisha",
+    "class": "X-F",
+    "team": "ISH_20"
+  },
+  {
+    "name": "Faizah Nur Istiqomah",
+    "class": "X-F",
+    "team": "ISH_21"
+  },
+  {
+    "name": "Robyatus Sholikhah",
+    "class": "X-F",
+    "team": "ISH_21"
+  },
+  {
+    "name": "Nayla Khiswa Shofatus Safa",
+    "class": "X-F",
+    "team": "ISH_21"
+  },
+  {
+    "name": "Adinda Melatin Khanifah",
+    "class": "X-F",
+    "team": "ISH_22"
+  },
+  {
+    "name": "Naila Nur Salsabila",
+    "class": "X-F",
+    "team": "ISH_22"
+  },
+  {
+    "name": "Muhammad Mahardika Ardiansyah",
+    "class": "X-I",
+    "team": "FTR_01"
+  },
+  {
+    "name": "Muhammad Anwar Mubarok",
+    "class": "X-I",
+    "team": "FTR_01"
+  },
+  {
+    "name": "Salma Agustien Romadhiana",
+    "class": "X-F",
+    "team": "FTR_02"
+  },
+  {
+    "name": "Anisa Husnul Habibah",
+    "class": "X-M",
+    "team": "FTR_02"
+  },
+  {
+    "name": "Nadia Safarani",
+    "class": "X-D",
+    "team": "FTR_02"
+  },
+  {
+    "name": "Akbar Bima Al Farobi",
+    "class": "XI-D",
+    "team": "FTR_03"
+  },
+  {
+    "name": "Bramantio Prakoso",
+    "class": "X-D",
+    "team": "FTR_04"
+  },
+  {
+    "name": "Randy Achmad A.",
+    "class": "X-D",
+    "team": "FTR_04"
+  },
+  {
+    "name": "M. Ciko Rizkya A.",
+    "class": "X-D",
+    "team": "FTR_04"
+  },
+  {
+    "name": "Daffaturrizky Fachrizal Ernawan",
+    "class": "X-E",
+    "team": "FTR_05"
+  },
+  {
+    "name": "Faraz Fakhry Tejatama",
+    "class": "X-E",
+    "team": "FTR_05"
+  },
+  {
+    "name": "Muhammad Rehan Aprianto",
+    "class": "X-E",
+    "team": "FTR_05"
+  },
+  {
+    "name": "Virgiawan Rizky Ash Sifa",
+    "class": "X-F",
+    "team": "FTR_06"
+  },
+  {
+    "name": "Muhammad Irfan Hibatullah",
+    "class": "X-F",
+    "team": "FTR_06"
+  }
 ];
 
 /* ============================================
