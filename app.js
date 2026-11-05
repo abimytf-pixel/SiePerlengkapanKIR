@@ -26,6 +26,8 @@ let html5QrScanner   = null;
 let currentScanCode  = null;
 let pendingReturnLoanId = null;
 let lastScan         = 0;
+let isFlashOn        = false;   // Status flash (nyala/mati)
+let activeVideoTrack = null;    // Referensi ke MediaStreamTrack kamera aktif
 
 /* ============================================
    UTILITY: Security Helper
@@ -82,11 +84,78 @@ function toggleCamera() {
       { facingMode: 'environment' },
       { fps: 10, qrbox: { width: 250, height: 120 } },
       (decodedText) => handleScanSuccess(decodedText)
-    );
+    ).then(() => {
+      // Ambil referensi video track setelah kamera aktif
+      // agar kita bisa mengontrol flash (torch) lewat MediaStream API
+      const videoEl = document.querySelector('#reader video');
+      if (videoEl && videoEl.srcObject) {
+        const tracks = videoEl.srcObject.getVideoTracks();
+        if (tracks.length > 0) {
+          activeVideoTrack = tracks[0];
+        }
+      }
+    });
   } else {
     box.classList.add('hidden');
     btn.textContent = 'Buka Kamera';
+    // Matikan flash sebelum menutup kamera
+    if (isFlashOn) toggleFlash();
+    activeVideoTrack = null;
     if (html5QrScanner) html5QrScanner.stop();
+  }
+}
+
+/* ============================================
+   FITUR: FLASH / TORCH KAMERA
+   Menggunakan MediaStream Track Constraints API
+   (torch). Didukung di Android Chrome, beberapa
+   perangkat iOS mungkin tidak mendukung torch.
+   ============================================ */
+async function toggleFlash() {
+  const icon = document.getElementById('flashIcon');
+  const btn  = document.getElementById('flashBtn');
+
+  // Jika referensi track belum ada, coba ambil ulang
+  if (!activeVideoTrack) {
+    const videoEl = document.querySelector('#reader video');
+    if (videoEl && videoEl.srcObject) {
+      const tracks = videoEl.srcObject.getVideoTracks();
+      if (tracks.length > 0) activeVideoTrack = tracks[0];
+    }
+  }
+
+  // Cek apakah perangkat mendukung fitur torch
+  if (!activeVideoTrack) {
+    showToast('Kamera belum aktif.', 'bg-slate-700');
+    return;
+  }
+
+  const capabilities = activeVideoTrack.getCapabilities();
+  if (!capabilities.torch) {
+    showToast('Perangkat ini tidak mendukung flash kamera.', 'bg-slate-700');
+    return;
+  }
+
+  try {
+    isFlashOn = !isFlashOn;
+    await activeVideoTrack.applyConstraints({ advanced: [{ torch: isFlashOn }] });
+
+    // Update tampilan tombol
+    if (isFlashOn) {
+      icon.className = 'fa-solid fa-bolt text-sm';
+      btn.classList.remove('text-yellow-400', 'border-slate-600');
+      btn.classList.add('text-yellow-300', 'border-yellow-400', 'bg-yellow-500/20');
+      showToast('Flash menyala 🔦', 'bg-yellow-600');
+    } else {
+      icon.className = 'fa-solid fa-bolt text-sm';
+      btn.classList.remove('text-yellow-300', 'border-yellow-400', 'bg-yellow-500/20');
+      btn.classList.add('text-yellow-400', 'border-slate-600');
+      showToast('Flash mati', 'bg-slate-700');
+    }
+  } catch (err) {
+    console.error('[toggleFlash]', err);
+    showToast('Gagal mengontrol flash.', 'bg-rose-600');
+    isFlashOn = !isFlashOn; // Rollback state
   }
 }
 

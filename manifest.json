@@ -1,6 +1,6 @@
 {
-  "name": "Sie Perlengkapan KIR - Camp Riset 2026",
-  "short_name": "KIR Perlengkapan",
+  "name": "Koordinator KIR - Camp Riset 2026",
+  "short_name": "KIR Koordinator",
   "description": "Aplikasi manajemen peminjaman alat untuk Camp Riset KIR MAN 1 Jombang",
   "start_url": "/",
   "display": "standalone",

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sie Perlengkapan KIR</title>
+  <title>Koordinator KIR</title>
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
@@ -59,7 +59,7 @@
         <i class="fa-solid fa-boxes-packing"></i>
       </div>
       <div>
-        <h1 class="font-bold text-sm text-white">Sie Perlengkapan</h1>
+        <h1 class="font-bold text-sm text-white">Koordinator KIR</h1>
         <p class="text-[10px] text-slate-400">Camp Riset 2026</p>
       </div>
     </div>
@@ -103,6 +103,14 @@
       <div id="scannerBox"
            class="hidden relative bg-slate-950 rounded-xl overflow-hidden border border-slate-800 min-h-[200px] flex items-center justify-center">
         <div id="reader" class="w-full"></div>
+
+        <!-- Tombol Flash — muncul hanya saat kamera aktif -->
+        <button id="flashBtn"
+                onclick="toggleFlash()"
+                title="Nyalakan / Matikan Flash"
+                class="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-slate-800/90 border border-slate-600 text-yellow-400 flex items-center justify-center active:scale-95 transition shadow-lg">
+          <i id="flashIcon" class="fa-solid fa-bolt text-sm"></i>
+        </button>
       </div>
     </section>
 
