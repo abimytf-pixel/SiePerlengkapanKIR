@@ -1,0 +1,75 @@
+/* ============================================
+   style.css — Sie Perlengkapan KIR
+   Camp Riset 2026
+   ============================================ */
+
+/* Base Typography */
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #0F172A; /* Slate 900 */
+  color: #F8FAFC;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1E293B; }
+::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+/* ============================================
+   COMPONENT: Glass Card
+   ============================================ */
+.glass-card {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================
+   COMPONENT: QR Scanner
+   ============================================ */
+#reader video {
+  object-fit: cover !important;
+  border-radius: 0.75rem;
+}
+
+/* ============================================
+   ANIMATION: Error Flash
+   ============================================ */
+.error-flash {
+  animation: flashRed 0.5s ease-in-out;
+}
+
+@keyframes flashRed {
+  0%, 100% { background-color: #0F172A; }
+  50%       { background-color: #7F1D1D; } /* Dark Red */
+}
+
+/* ============================================
+   COMPONENT: Autocomplete Dropdown
+   ============================================ */
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #334155;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #1E293B;
+  border-radius: 0 0 0.5rem 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  border-bottom: 1px solid #334155;
+}
+
+.autocomplete-items div:hover {
+  background-color: #0F766E;
+}

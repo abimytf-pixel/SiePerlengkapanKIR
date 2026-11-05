@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sie Perlengkapan KIR</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0F172A">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome
+       SRI hash memastikan file CDN tidak dimanipulasi pihak ketiga -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+
+  <!-- Tailwind CSS (utility-first framework) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- HTML5 QR Code Scanner -->
+  <script
+    src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"
+    crossorigin="anonymous"></script>
+
+  <!-- SheetJS (Excel Import/Export) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
+    crossorigin="anonymous"></script>
+
+  <!-- Firebase SDKs (Compat — untuk firebase-sync.js) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"
+          crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"
+          crossorigin="anonymous"></script>
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="min-h-screen flex flex-col pb-6 selection:bg-teal-500 selection:text-white" id="appBody">
+
+  <!-- ==========================================
+       HEADER
+       ========================================== -->
+  <header class="sticky top-0 z-30 bg-slate-900/95 backdrop-blur border-b border-slate-800 px-4 py-3 shadow-lg flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <!-- Logo / Icon -->
+      <div class="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center text-white">
+        <i class="fa-solid fa-boxes-packing"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-sm text-white">Sie Perlengkapan</h1>
+        <p class="text-[10px] text-slate-400">Camp Riset 2026</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <!-- Indikator Status Jaringan -->
+      <div id="netStatus"
+           class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold">
+        <i class="fa-solid fa-wifi"></i>
+        <span id="netText">Online</span>
+      </div>
+
+      <!-- Tombol Sync ke Firebase -->
+      <button onclick="syncData()"
+              class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 text-cyan-400 flex items-center justify-center active:scale-95"
+              title="Sinkronisasi ke Cloud">
+        <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       KONTEN UTAMA
+       ========================================== -->
+  <main class="max-w-2xl mx-auto w-full px-4 pt-4 flex-1 space-y-4">
+
+    <!-- SECTION: QR / Barcode Scanner -->
+    <section class="glass-card rounded-2xl p-4 border-slate-700 shadow-xl">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="font-bold text-sm">
+          <i class="fa-solid fa-camera text-cyan-400 mr-2"></i>Scanner Code 128
+        </h2>
+        <button id="camBtn"
+                onclick="toggleCamera()"
+                class="bg-cyan-600 px-3 py-1.5 rounded-lg text-xs font-bold active:scale-95 transition">
+          Buka Kamera
+        </button>
+      </div>
+
+      <!-- Area tampilan kamera -->
+      <div id="scannerBox"
+           class="hidden relative bg-slate-950 rounded-xl overflow-hidden border border-slate-800 min-h-[200px] flex items-center justify-center">
+        <div id="reader" class="w-full"></div>
+      </div>
+    </section>
+
+    <!-- SECTION: Tombol Import & Export -->
+    <section class="grid grid-cols-2 gap-3">
+
+      <!-- Import Master Excel -->
+      <button onclick="document.getElementById('importExcelInput').click()"
+              class="glass-card p-3 rounded-xl flex items-center gap-3 active:scale-95">
+        <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+          <i class="fa-solid fa-file-import"></i>
+        </div>
+        <div class="text-left">
+          <p class="text-xs font-bold text-white">Import Master</p>
+          <p class="text-[9px] text-slate-400">Dari Excel</p>
+        </div>
+      </button>
+      <!-- Input file tersembunyi untuk import -->
+      <input type="file"
+             id="importExcelInput"
+             accept=".xlsx,.xls"
+             class="hidden"
+             onchange="handleImportExcel(event)">
+
+      <!-- Export Laporan ke Excel -->
+      <button onclick="exportToExcel()"
+              class="glass-card p-3 rounded-xl flex items-center gap-3 active:scale-95">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+          <i class="fa-solid fa-file-excel"></i>
+        </div>
+        <div class="text-left">
+          <p class="text-xs font-bold text-white">Export Data</p>
+          <p class="text-[9px] text-slate-400">Laporan XLSX</p>
+        </div>
+      </button>
+    </section>
+
+    <!-- SECTION: Riwayat Peminjaman -->
+    <section class="glass-card rounded-2xl p-4">
+      <h2 class="font-bold text-sm mb-3 border-b border-slate-700 pb-2">
+        Riwayat Peminjaman (Lokal)
+      </h2>
+      <!-- Diisi oleh renderLoans() di app.js -->
+      <div id="loansList" class="space-y-2 max-h-[300px] overflow-y-auto pr-1"></div>
+    </section>
+
+  </main>
+
+
+  <!-- ==========================================
+       MODAL: PEMINJAMAN (CHECKOUT)
+       ========================================== -->
+  <div id="checkoutModal"
+       class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-card w-full max-w-sm rounded-2xl p-5 relative border border-slate-700">
+
+      <h3 class="text-sm font-bold text-cyan-400 mb-1">Peminjaman Alat</h3>
+      <!-- Nama alat diisi oleh app.js via textContent (aman XSS) -->
+      <p id="coEquipName" class="text-lg font-extrabold text-white mb-4"></p>
+
+      <form id="checkoutForm" onsubmit="submitCheckout(event)" class="space-y-4">
+
+        <!-- Field Autocomplete Nama Peminjam -->
+        <div class="relative">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Peminjam</label>
+          <input type="text"
+                 id="coName"
+                 autocomplete="off"
+                 required
+                 maxlength="100"
+                 placeholder="Ketik nama..."
+                 class="w-full bg-slate-900 border border-slate-700 text-sm rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500">
+          <div id="autocompleteList" class="autocomplete-items hidden"></div>
+        </div>
+
+        <!-- Field Pilih Kelompok -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Kelompok</label>
+          <select id="coGroup"
+                  required
+                  class="w-full bg-slate-900 border border-slate-700 text-sm rounded-lg px-3 py-2 text-white focus:outline-none focus:border-cyan-500">
+            <option value="">-- Pilih Kelompok Resmi --</option>
+            <option value="FTR_01">FTR_01</option>
+            <option value="FTR_02">FTR_02</option>
+            <option value="MST_01">MST_01</option>
+            <option value="MST_02">MST_02</option>
+            <option value="ISH_01">ISH_01</option>
+            <option value="ISH_02">ISH_02</option>
+          </select>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="button"
+                  onclick="closeModals()"
+                  class="flex-1 py-2 rounded-lg bg-slate-800 text-xs font-bold">
+            Batal
+          </button>
+          <button type="submit"
+                  class="flex-1 py-2 rounded-lg bg-teal-600 text-white text-xs font-bold shadow-lg shadow-teal-600/30">
+            Simpan
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       MODAL: PENGEMBALIAN (RETURN)
+       ========================================== -->
+  <div id="returnModal"
+       class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-card w-full max-w-sm rounded-2xl p-5 text-center border border-slate-700">
+
+      <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-500 mx-auto flex items-center justify-center text-xl mb-3">
+        <i class="fa-solid fa-arrow-rotate-left"></i>
+      </div>
+
+      <h3 class="text-sm font-bold text-white mb-1">Konfirmasi Pengembalian</h3>
+      <!-- Diisi via textContent oleh app.js (aman XSS) -->
+      <p id="retEquipName" class="text-xs text-slate-300 font-semibold"></p>
+      <p class="text-[10px] text-slate-400 mb-4 mt-1">
+        Dipinjam oleh: <span id="retBorrower" class="text-amber-400"></span>
+      </p>
+
+      <div class="flex gap-2">
+        <button onclick="closeModals()"
+                class="flex-1 py-2 rounded-lg bg-slate-800 text-xs font-bold">
+          Batal
+        </button>
+        <button onclick="processReturn()"
+                class="flex-1 py-2 rounded-lg bg-emerald-600 text-white text-xs font-bold">
+          Ya, Kembalikan
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast Notification -->
+  <div id="toast"
+       class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 opacity-0 translate-y-4 px-4 py-2 rounded-xl text-xs font-bold text-white shadow-xl pointer-events-none flex items-center gap-2">
+  </div>
+
+
+  <!-- ==========================================
+       JAVASCRIPT — Urutan loading penting!
+       1. db.js       : IndexedDB (harus paling awal)
+       2. firebase-sync.js : Config & fungsi sync
+       3. app.js      : Logika utama (memanggil keduanya)
+       ========================================== -->
+  <script src="db.js"></script>
+  <script src="firebase-sync.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Registrasi Service Worker (PWA Offline) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('[SW] Terdaftar, scope:', reg.scope))
+          .catch(err => console.error('[SW] Gagal registrasi:', err));
+      });
+    }
+  </script>
+
+</body>
+</html>
